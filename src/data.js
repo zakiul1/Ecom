@@ -59,18 +59,18 @@ export const categories = [
 export const products = [
   {
     id: 1,
-    img: "https://images.unsplash.com/photo-1627225925683-1da7021732ea",
+    img: "https://static-01.daraz.com.bd/p/7333dcca65bcd0469843b0d7a29d77db.jpg",
   },
   {
     id: 2,
-    img: "https://images.unsplash.com/photo-1622445272461-c6580cab8755",
+    img: "https://static-01.daraz.com.bd/p/e7c22d8b523955351ed3b7529dd44843.jpg",
   },
   {
     id: 3,
-    img: "https://images.unsplash.com/photo-1620799139507-2a76f79a2f4d",
+    img: "https://static-01.daraz.com.bd/p/6901a02f795e95919cc3b09cc7e70215.jpg",
   },
   {
     id: 4,
-    img: "https://images.unsplash.com/photo-1618677603544-51162346e165",
+    img: "https://static-01.daraz.com.bd/p/e7c22d8b523955351ed3b7529dd44843.jpg",
   },
 ];
