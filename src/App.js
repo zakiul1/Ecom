@@ -1,10 +1,11 @@
 import React from "react";
-import Home from "./pages/Home";
+
+import SinglePage from "./pages/SinglePage";
 
 function App() {
   return (
     <>
-      <Home />
+      <SinglePage />
     </>
   );
 }
