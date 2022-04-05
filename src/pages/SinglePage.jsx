@@ -66,9 +66,38 @@ const FilterSize = styled.select`
 `;
 const FilterSizeOption = styled.option``;
 
-const AddContainer = styled.div``;
-const AmountContainer = styled.div``;
-const Amount = styled.div``;
+const AddContainer = styled.div`
+  display: flex;
+  align-items: center;
+  width: 60%;
+  justify-content: space-between;
+`;
+const AmountContainer = styled.div`
+  display: flex;
+  align-items: center;
+  font-weight: 700;
+  justify-content: center;
+`;
+const Amount = styled.span`
+  width: 60px;
+  height: 30px;
+  border-radius: 10px;
+  border: 1px solid teal;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0px 5px;
+`;
+const Button = styled.button`
+  padding: 10px;
+  background-color: transparent;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  &:hover {
+    background-color: teal;
+    color: #fff;
+  }
+`;
 
 const SinglePage = () => {
   return (
@@ -111,10 +140,11 @@ const SinglePage = () => {
           </FinterContainer>
           <AddContainer>
             <AmountContainer>
-              <Remove />
+              <Remove style={{ cursor: "pointer" }} />
               <Amount>1</Amount>
-              <Add />
+              <Add style={{ cursor: "pointer" }} />
             </AmountContainer>
+            <Button>Add To Card</Button>
           </AddContainer>
         </InfoContainer>
       </Wrapper>

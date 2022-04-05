@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   display: flex;
+  margin-bottom: 30px;
 `;
 export const LeftFooter = styled.div`
   flex: 1;

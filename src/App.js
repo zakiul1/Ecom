@@ -1,11 +1,10 @@
 import React from "react";
-
-import SinglePage from "./pages/SinglePage";
+import Cart from "./pages/Cart  ";
 
 function App() {
   return (
     <>
-      <SinglePage />
+      <Cart />
     </>
   );
 }
