@@ -1,62 +1,92 @@
-import React from "react";
-import styled from "styled-components";
+import axios from "axios";
+import Notiflix from "notiflix";
+import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 
-const Container = styled.div`
-  width: 100vw;
-  height: 100vh;
-  background-color: #fcfdec;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-const Wrapper = styled.div`
-  padding: 20px;
-  width: 25%;
-  background-color: #fff;
-`;
-const Title = styled.h1`
-  text-align: center;
-  font-size: 24px;
-  font-weight: 300;
-`;
-const Form = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-const Input = styled.input`
-  flex: 1;
-  min-width: 40%;
-  margin: 10px 0px;
-  padding: 10px;
-`;
-const Button = styled.button`
-  width: 100%;
-  border: none;
-  padding: 10px 20px;
-  background-color: teal;
-  color: #fff;
-  cursor: pointer;
-  margin-bottom: 10px;
-`;
-const Link = styled.a`
-  margin: 5px 0px;
-  font-size: 12px;
-  text-decoration: underline;
-  cursor: pointer;
-`;
+import {
+  Container,
+  Wrapper,
+  Title,
+  Form,
+  Input,
+  Button,
+  Links,
+  Span,
+} from "../styledComponent/login.styled";
 
 const Login = () => {
+  const history = useNavigate();
+  const [loginInput, setloginInput] = useState({
+    email: "",
+    password: "",
+    error_list: [],
+  });
+
+  const handleInput = (e) => {
+    const { value, name } = e.target;
+    setloginInput((preVal) => {
+      return {
+        ...preVal,
+        [name]: value,
+      };
+    });
+  };
+
+  const loginSubmit = (e) => {
+    e.preventDefault();
+
+    const data = {
+      email: loginInput.email,
+      password: loginInput.password,
+    };
+
+    axios.get("/sanctum/csrf-cookie").then((response) => {
+      axios.post("/api/login", data).then((res) => {
+        if (res.data.status === 200) {
+          localStorage.setItem("auth_token", res.data.token);
+          localStorage.setItem("auth_name", res.data.username);
+          Notiflix.Notify.success(res.data.message);
+          history("/");
+        } else if (res.data.status === 401) {
+          Notiflix.Notify.warning(res.data.message);
+        } else {
+          setloginInput((preVal) => {
+            return {
+              ...preVal,
+              error_list: res.data.validation_error,
+            };
+          });
+        }
+      });
+    });
+  };
+
   return (
     <Container>
       <Wrapper>
         <Title>SIGN IN</Title>
-        <Form>
-          <Input placeholder="User Name Or Email" />
-          <Input placeholder="Password" />
+        <Form onSubmit={loginSubmit}>
+          <Input
+            placeholder="User Name Or Email"
+            name="email"
+            value={loginInput.email}
+            onChange={handleInput}
+          />
+          <Span>{loginInput.error_list.email}</Span>
+          <Input
+            placeholder="Password"
+            type="password"
+            name="password"
+            value={loginInput.password}
+            onChange={handleInput}
+          />
+          <Span>{loginInput.error_list.password}</Span>
 
-          <Button>Login</Button>
-          <Link>Forget Password?</Link>
-          <Link>Create a New Account</Link>
+          <Button type="submit">Login</Button>
+          <Links>Forget Password?</Links>
+          <Links as={Link} to="/registation">
+            Create a New Account
+          </Links>
         </Form>
       </Wrapper>
     </Container>

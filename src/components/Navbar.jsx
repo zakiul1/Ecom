@@ -14,6 +14,7 @@ import {
   Rightheader,
   MenuItems,
 } from "../styledComponent/navbar.style";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   return (
@@ -30,8 +31,19 @@ const Navbar = () => {
           <SiteLogo>E Com...</SiteLogo>
         </CentreHeader>
         <Rightheader>
-          <MenuItems>REGISTER</MenuItems>
-          <MenuItems>SIGN IN</MenuItems>
+          <MenuItems>
+            <Link to="/">HOME</Link>
+          </MenuItems>
+          <MenuItems>
+            <Link to="/cart">CART</Link>
+          </MenuItems>
+          <MenuItems>
+            <Link to="/registation">REGISTER</Link>
+          </MenuItems>
+          <MenuItems>
+            <Link to="/login">SIGN IN</Link>
+          </MenuItems>
+
           <MenuItems>
             <Badge badgeContent={4} color="primary">
               <ShoppingCartIcon color="action" />

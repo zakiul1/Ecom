@@ -1,63 +1,86 @@
-import React from "react";
-import styled from "styled-components";
+import axios from "axios";
+import Notiflix from "notiflix";
+import React, { useState } from "react";
+import {
+  Container,
+  Wrapper,
+  Title,
+  Form,
+  Input,
+  Agrement,
+  Button,
+  Span,
+} from "../styledComponent/registation.styled";
 
-const Container = styled.div`
-  width: 100vw;
-  height: 100vh;
-  background-color: #fcfdec;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-const Wrapper = styled.div`
-  padding: 20px;
-  width: 40%;
-  background-color: #fff;
-`;
-const Title = styled.h1`
-  text-align: center;
-  font-size: 24px;
-  font-weight: 300;
-`;
-const Form = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-`;
-const Input = styled.input`
-  flex: 1;
-  min-width: 40%;
-  margin: 20px 10px 0px 0px;
-  padding: 10px;
-`;
-const Agrement = styled.span`
-  font-size: 12px;
-  margin: 20px 0px;
-`;
-const Button = styled.button`
-  width: 100%;
-  border: none;
-  padding: 15px 20px;
-  background-color: teal;
-  color: #fff;
-  cursor: pointer;
-`;
 const Register = () => {
+  const [inputValue, setinputValue] = useState({
+    name: "",
+    email: "",
+    password: "",
+    error_list: [],
+  });
+  const handleChangeInput = (e) => {
+    const { name, value } = e.target;
+    setinputValue((prevalue) => {
+      return {
+        ...prevalue,
+        [name]: value,
+      };
+    });
+  };
+  const registerSubmit = (e) => {
+    e.preventDefault();
+    const data = {
+      name: inputValue.name,
+      email: inputValue.email,
+      password: inputValue.password,
+    };
+    axios.get("/sanctum/csrf-cookie").then((response) => {
+      axios.post(`/api/registation`, data).then((res) => {
+        if (res.data.status === 200) {
+          localStorage.setItem("auth_token", res.data.token);
+          localStorage.setItem("auth_name", res.data.username);
+          Notiflix.Notify.success(res.data.message);
+        } else {
+          setinputValue({
+            ...inputValue,
+            error_list: res.data.validation_error,
+          });
+        }
+      });
+    });
+  };
   return (
     <Container>
       <Wrapper>
         <Title>CREATE AN ACCOUNT</Title>
-        <Form>
-          <Input placeholder="Name" />
-          <Input placeholder="Last Name" />
-          <Input placeholder="User Name" />
-          <Input placeholder="Email" />
-          <Input placeholder="Password" />
-          <Input placeholder="Conform Password" />
+        <Form onSubmit={registerSubmit}>
+          <Input
+            placeholder="Name"
+            name="name"
+            value={inputValue.name}
+            onChange={handleChangeInput}
+          />
+          <Span>{inputValue.error_list.name}</Span>
+          <Input
+            placeholder="Email"
+            name="email"
+            value={inputValue.email}
+            onChange={handleChangeInput}
+          />
+          <Span>{inputValue.error_list.email}</Span>
+          <Input
+            placeholder="Password"
+            name="password"
+            value={inputValue.password}
+            onChange={handleChangeInput}
+          />
+          <Span>{inputValue.error_list.password}</Span>
           <Agrement>
             By creating an account , I consent to the processing of my personal
             data in accoradance with the <b>PRIVICY POLICY</b>
           </Agrement>
-          <Button>Create</Button>
+          <Button type="submit">Create</Button>
         </Form>
       </Wrapper>
     </Container>
