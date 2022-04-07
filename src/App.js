@@ -1,6 +1,11 @@
 import React from "react";
 import Layouts from "./pages/Layouts";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
 import Cart from "./pages/Cart";
@@ -17,6 +22,7 @@ axios.interceptors.request.use((config) => {
 });
 
 function App() {
+  const login = localStorage.getItem("auth_token");
   return (
     <>
       <Router>
@@ -25,8 +31,15 @@ function App() {
             <Route index element={<Home />} />
             <Route path="cart" element={<Cart />} />
           </Route>
-          <Route path="registation" element={<Register />} />
-          <Route path="login" element={<Login />} />
+          <Route
+            path="registation"
+            element={login ? <Navigate to="/" replace /> : <Register />}
+          />
+          <Route
+            path="login"
+            element={login ? <Navigate to="/" replace /> : <Login />}
+          />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Router>
     </>
