@@ -1,6 +1,6 @@
 import React from "react";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-import { Badge } from "@mui/material";
+import { Badge, Button } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import {
   Container,
@@ -13,10 +13,65 @@ import {
   SiteLogo,
   Rightheader,
   MenuItems,
+  Links,
 } from "../styledComponent/navbar.style";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
+import Notiflix from "notiflix";
+import axios from "axios";
 
 const Navbar = () => {
+  const history = useNavigate();
+  const logOuthandle = (e) => {
+    e.preventDefault();
+
+    Notiflix.Confirm.show(
+      "Notiflix Confirm",
+      "Do you want to Logout?",
+      "Yes",
+      "No",
+      function okCb() {
+        axios.post(`/api/logout`).then((res) => {
+          if (res.data.status === 200) {
+            localStorage.removeItem("auth_token");
+            localStorage.removeItem("auth_name");
+            history("/");
+          }
+        });
+      },
+      function cancelCb() {},
+      {
+        width: "320px",
+        borderRadius: "8px",
+      }
+    );
+  };
+  var authbutton = "";
+  if (!localStorage.getItem("auth_token")) {
+    authbutton = (
+      <>
+        <Links>
+          <Link style={{ textDecoration: "none" }} to="/registation">
+            REGISTATION
+          </Link>
+        </Links>
+        <Links>
+          <Link style={{ textDecoration: "none" }} to="/login">
+            LOGIN
+          </Link>
+        </Links>
+      </>
+    );
+  } else {
+    authbutton = (
+      <>
+        <Button onClick={logOuthandle} size="small">
+          Log Out
+        </Button>
+      </>
+    );
+  }
+
   return (
     <Container>
       <Wrapper>
@@ -32,19 +87,18 @@ const Navbar = () => {
         </CentreHeader>
         <Rightheader>
           <MenuItems>
-            <Link to="/">HOME</Link>
-          </MenuItems>
-          <MenuItems>
-            <Link to="/cart">CART</Link>
-          </MenuItems>
-          <MenuItems>
-            <Link to="/registation">REGISTER</Link>
-          </MenuItems>
-          <MenuItems>
-            <Link to="/login">SIGN IN</Link>
-          </MenuItems>
+            <Links>
+              <Link style={{ textDecoration: "none" }} to="/">
+                HOME
+              </Link>
+            </Links>
 
-          <MenuItems>
+            <Links>
+              <Link style={{ textDecoration: "none" }} to="/cart">
+                CART
+              </Link>
+            </Links>
+            {authbutton}
             <Badge badgeContent={4} color="primary">
               <ShoppingCartIcon color="action" />
             </Badge>

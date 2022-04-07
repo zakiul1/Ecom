@@ -40,8 +40,16 @@ export const Rightheader = styled.div`
   justify-content: end;
   align-items: center;
 `;
-export const MenuItems = styled.div`
+export const MenuItems = styled.ul`
   font-size: 14px;
   cursor: pointer;
   margin-left: 25px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+`;
+export const Links = styled.li`
+  margin-left: 15px;
+
+  list-style: none;
 `;

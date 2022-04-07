@@ -48,7 +48,7 @@ const Login = () => {
           Notiflix.Notify.success(res.data.message);
           history("/");
         } else if (res.data.status === 401) {
-          Notiflix.Notify.warning(res.data.message);
+          Notiflix.Notify.warning(res.data.message, "", 50);
         } else {
           setloginInput((preVal) => {
             return {

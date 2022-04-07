@@ -1,6 +1,8 @@
 import axios from "axios";
 import Notiflix from "notiflix";
 import React, { useState } from "react";
+import styled from "styled-components";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Container,
   Wrapper,
@@ -11,8 +13,15 @@ import {
   Button,
   Span,
 } from "../styledComponent/registation.styled";
+const Links = styled.a`
+  margin: 5px 0px;
+  font-size: 12px;
+  text-decoration: underline;
+  cursor: pointer;
+`;
 
 const Register = () => {
+  const history = useNavigate();
   const [inputValue, setinputValue] = useState({
     name: "",
     email: "",
@@ -41,6 +50,7 @@ const Register = () => {
           localStorage.setItem("auth_token", res.data.token);
           localStorage.setItem("auth_name", res.data.username);
           Notiflix.Notify.success(res.data.message);
+          history("/login");
         } else {
           setinputValue({
             ...inputValue,
@@ -81,6 +91,9 @@ const Register = () => {
             data in accoradance with the <b>PRIVICY POLICY</b>
           </Agrement>
           <Button type="submit">Create</Button>
+          <Links as={Link} to="/login">
+            Already you have account?
+          </Links>
         </Form>
       </Wrapper>
     </Container>
